@@ -33,17 +33,14 @@ jobs:
             c_compiler: cl
             cpp_compiler: cl
             label: win-64
-            prefix: C:\Miniconda3\envs\tudat
           - os: ubuntu-latest
             c_compiler: gcc
             cpp_compiler: g++
             label: linux-64
-            prefix: /usr/share/miniconda3/envs/tudat
           - os: macos-latest
             c_compiler: clang
             cpp_compiler: clang++
             label: osx-64
-            prefix: /usr/share/miniconda3/envs/tudat
         exclude:
           - os: windows-latest
             c_compiler: gcc
@@ -59,13 +56,8 @@ jobs:
             c_compiler: clang
 
     steps:
-
-    - name: Set reusable strings
-      # Turn repeated input strings (such as the build output directory) into step outputs. These step outputs can be used throughout the workflow file.
-      id: strings
-      shell: bash -l {0}
-      run: |
-        echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
+    - name: Checkout repo
+      uses: actions/checkout@v4
 
     - name: ccache
       uses: hendrikmuhs/ccache-action@v1.2.12
@@ -78,18 +70,21 @@ jobs:
       # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
       shell: bash -l {0}
       run: >
-        cmake -B "${{ steps.strings.outputs.build-output-dir }}"
-        -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}
-        -DCMAKE_C_COMPILER=${{ matrix.c_compiler }}
-        -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
-        -DCMAKE_C_COMPILER_LAUNCHER=ccache
+        cd "${{ github.workspace }}";
+        ls -a;
+        mkdir build;
+        cd build;
+        cmake .. \
+        -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
+        -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }} \
+        -DCMAKE_C_COMPILER=${{ matrix.c_compiler }} \
+        -DCMAKE_C_COMPILER_LAUNCHER=ccache \
         -DCMAKE_CXX_COMPILER_LAUNCHER=ccache
-        -S "${{ github.workspace }}"
 
     - name: Build
       # Build your program with the given configuration. Note that --config is needed because the default Windows generator is a multi-config generator (Visual Studio generator). Use multiple cpu cores available in the runner.
       shell: bash -l {0}
-      run: cmake --build "${{ steps.strings.outputs.build-output-dir }}" --config "${{ matrix.build_type }}" -j4
+      run: cmake --build "${{ github.workspace }}/build" -j4
 
 
 
