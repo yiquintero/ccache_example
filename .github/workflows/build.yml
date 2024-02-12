@@ -84,10 +84,6 @@ jobs:
       shell: bash -l {0}
       run: cmake --build "${{ github.workspace }}/build" --config ${{ matrix.build_type }} -j4
 
-    - name: TMP
-      shell: bash -l {0}
-      run: cd "${{ github.workspace }}/build/"; ls
-
     - name: Install
       shell: bash -l {0}
       run: cmake --install "${{ github.workspace }}/build" --config ${{ matrix.build_type }}
@@ -95,7 +91,7 @@ jobs:
     - name: Test
       shell: bash -l {0}
       run: >
-        cd "${{ github.workspace }}/install";
-        ls
+        cd "${{ github.workspace }}/install/bin";
+        ./hello
 
 
