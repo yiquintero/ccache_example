@@ -72,6 +72,7 @@ jobs:
       run: >
         cmake -B "${{ github.workspace }}/build"
         -S "${{ github.workspace }}"
+        -DCMAKE_INSTALL_PREFIX="${{ github.workspace }}/install"
         -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
         -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}
         -DCMAKE_C_COMPILER=${{ matrix.c_compiler }}
@@ -83,11 +84,14 @@ jobs:
       shell: bash -l {0}
       run: cmake --build "${{ github.workspace }}/build" -j4
 
+    - name: Install
+      shell: bash -l {0}
+      run: cmake --install "${{ github.workspace }}/build" --config ${{ matrix.build_type }}
 
     - name: Test
       shell: bash -l {0}
       run: >
-        cd "${{ github.workspace }}/build";
+        cd "${{ github.workspace }}/install";
         ls
 
 
