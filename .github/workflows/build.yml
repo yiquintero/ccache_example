@@ -11,7 +11,7 @@ on:
 
 jobs:
   build:
-  
+
     runs-on: ${{ matrix.os }}
     defaults:
       run:
@@ -82,6 +82,8 @@ jobs:
         -DCMAKE_C_COMPILER=${{ matrix.c_compiler }}
         -DCMAKE_C_COMPILER_LAUNCHER=sccache
         -DCMAKE_CXX_COMPILER_LAUNCHER=sccache
+        -DCMAKE_MSVC_DEBUG_INFORMATION_FORMAT=Embedded
+        -DCMAKE_POLICY_CMP0141=NEW
 
     - name: Build
       # Build your program with the given configuration. Note that --config is needed because the default Windows generator is a multi-config generator (Visual Studio generator). Use multiple cpu cores available in the runner.
