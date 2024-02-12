@@ -1,10 +1,7 @@
 cmake_minimum_required(VERSION 3.16)
 
-project(main)
+project(hello)
 
-add_executable(main main.cpp)
+add_executable(hello main.cpp)
 
-install(TARGETS main)
-
-#enable_testing()
-#add_test(NAME main COMMAND main)
+install(TARGETS hello)
