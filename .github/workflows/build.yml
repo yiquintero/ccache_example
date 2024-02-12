@@ -70,15 +70,12 @@ jobs:
       # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
       shell: bash -l {0}
       run: >
-        cd "${{ github.workspace }}";
-        ls -a;
-        mkdir build;
-        cd build;
-        cmake .. \
-        -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
-        -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }} \
-        -DCMAKE_C_COMPILER=${{ matrix.c_compiler }} \
-        -DCMAKE_C_COMPILER_LAUNCHER=ccache \
+        cmake -B "${{ github.workspace }}/build"
+        -S "${{ github.workspace }}"
+        -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
+        -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}
+        -DCMAKE_C_COMPILER=${{ matrix.c_compiler }}
+        -DCMAKE_C_COMPILER_LAUNCHER=ccache
         -DCMAKE_CXX_COMPILER_LAUNCHER=ccache
 
     - name: Build
@@ -86,5 +83,11 @@ jobs:
       shell: bash -l {0}
       run: cmake --build "${{ github.workspace }}/build" -j4
 
+
+    - name: Test
+      shell: bash -l {0}
+      run: >
+        cd "${{ github.workspace }}/build";
+        ls
 
 
