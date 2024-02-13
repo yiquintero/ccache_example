@@ -13,13 +13,13 @@ if(ccache_exe)
   message(STATUS "Setting MSVC debug information format to 'Embedded'")
   set(CMAKE_MSVC_DEBUG_INFORMATION_FORMAT "$<$<CONFIG:Debug,RelWithDebInfo>:Embedded>")
 
-  set(CMAKE_VS_GLOBALS
-    "CLToolExe=cl.exe"
-    "CLToolPath=${CMAKE_BINARY_DIR}"
-    "TrackFileAccess=false"
-    "UseMultiToolTask=true"
-    "DebugInformationFormat=OldStyle"
-  )
+#   set(CMAKE_VS_GLOBALS
+#     "CLToolExe=cl.exe"
+#     "CLToolPath=${CMAKE_BINARY_DIR}"
+#     "TrackFileAccess=false"
+#     "UseMultiToolTask=true"
+#     "DebugInformationFormat=OldStyle"
+#   )
 endif()
 
 add_executable(hello main.cpp)
